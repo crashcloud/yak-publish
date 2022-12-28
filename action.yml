@@ -17,7 +17,8 @@ inputs:
   platforms:
     description: 'The Platform for the Package'
     required: false
-    default: { 'win' }
+    default:
+      - win
 outputs:
   result:
     description: 'Was the upload succesful?'

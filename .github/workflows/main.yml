@@ -3,12 +3,19 @@ on: [push]
 jobs:
   hello_world_job:
     runs-on: ubuntu-latest
-    name: A job to say hello
+    name: Yak Build & Publish
     steps:
       - uses: actions/checkout@v3
-      - id: foo
-        uses: actions/hello-world-composite-action@v1
+
+      - id: yak
+        uses: crashcloud/yak@v1
         with:
-          who-to-greet: 'Mona the Octocat'
-      - run: echo random-number ${{ steps.foo.outputs.random-number }}
-        shell: bash
+          package-name: MyPackage
+          token: ${{ secrets.YAK_TOKEN }}
+          build-path: src/project/bin/**/x64/
+          test-run: true
+          platforms:
+            - win
+      - run: Echo Random Number
+        shell: |
+          echo random-number ${{ steps.yak.outputs.result }}
