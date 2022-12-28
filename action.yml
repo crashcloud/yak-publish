@@ -1,23 +1,51 @@
 name: 'Deploy Yak'
 description: 'Deploys a yak package to the McNeel server'
 inputs:
-  who-to-greet:  # id of input
-    description: 'Who to greet'
+  package-name:
+    description: 'The package name'
     required: true
-    default: 'World'
+  token:
+    description: 'The YAK Auth token'
+    required: true
+  build-path:
+    description: 'The Build Directory for the Package'
+    required: true
+  test-run:
+    description: 'Publish to the test server'
+    required: false
+    default: true
+  platforms:
+    description: 'The Platform for the Package'
+    required: false
+    default: { 'win' }
 outputs:
-  random-number:
-    description: "Random number"
-    value: ${{ steps.random-number-generator.outputs.random-number }}
+  result:
+    description: 'Was the upload succesful?'
+    value: true # ${{ steps.random-number-generator.outputs.random-number }}
 runs:
   using: "composite"
   steps:
-    - run: echo Hello ${{ inputs.who-to-greet }}.
-      shell: bash
-    - id: random-number-generator
-      run: echo "random-number=$(echo $RANDOM)" >> $GITHUB_OUTPUT
-      shell: bash
-    - run: echo "${{ github.action_path }}" >> $GITHUB_PATH
-      shell: bash
-    - run: goodbye.sh
-      shell: bash
+    - run: Download Yak
+      shell: |
+        curl -o "yak.exe" "http://files.mcneel.com/yak/tools/latest/yak.exe"
+
+    - run : Enable Yak exe
+      shell: chmod +x yak.exe
+
+    - run : Build Package(s)
+      shell: |
+        cd ${{ inputs.build-path }}
+        for pform in ${{ inputs.platforms }}; do
+          ./yak.exe build --platform $pform
+        done
+
+    - run : Upload Yak(s)
+      shell: |
+      source="https://yak.rhino3d.com"
+      if [ true == ${{inputs.test-run }} ]; then
+        source="https://test.yak.rhino3d.com"
+      fi
+
+      for yakPackage in *.yak; do
+        ./yak.exe push $yakPackage --source $source
+      done
