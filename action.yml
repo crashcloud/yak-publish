@@ -26,6 +26,8 @@ outputs:
 runs:
   using: "composite"
   steps:
+    
+    # https://discourse.mcneel.com/t/github-action-to-yak/120815/2
     - run: Download Yak
       shell: |
         curl -o "yak.exe" "http://files.mcneel.com/yak/tools/latest/yak.exe"
