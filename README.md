@@ -6,7 +6,7 @@ This builds and publishes any Rhino and/or Grasshopper plugins (defined by a yak
 
 # Usage
 
-see [main.yml](https://github.com/crashcloud/yak-publish/blob/main/.github/workflows/main.yml)
+see [action.yml](https://github.com/crashcloud/yak-publish/blob/main/.github/workflows/action.yml)
 
 **Test build and publish to test server**
 
