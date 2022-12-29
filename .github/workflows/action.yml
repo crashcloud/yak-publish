@@ -4,7 +4,7 @@ jobs:
   publish-yak-example:
     strategy:
       matrix:
-        os: [ 'windows', 'mac-os', 'ubuntu' ]
+        os: [ 'windows', 'mac-os' ]
     runs-on: ${{ matrix.os }}
     name: Yak Build & Publish
     steps:
@@ -19,6 +19,5 @@ jobs:
           token: ${{ secrets.YAK_TOKEN }}
           build-path: src/project/bin/**/x64/
           test-run: true
-          platforms:
-            - ${{ matrix.os }}
+          platform: ${{ matrix.os }}
       

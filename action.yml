@@ -14,11 +14,10 @@ inputs:
     description: 'Publish to the test server'
     required: false
     default: true
-  platforms:
+  platform:
     description: 'The Platform for the Package'
     required: false
-    default:
-      - win
+    default: 'win'
 outputs:
   result:
     description: 'Was the upload succesful?'
@@ -53,8 +52,10 @@ runs:
       run: |
         import subprocess as proc
 
-        for pform in ${{ inputs.platforms }}:
-          proc.run( [ 'yak.exe', 'build', '--platform', pform[:3] ] )
+        platform = ${{ inputs.platform }}
+        platform = platform[:3]
+
+        proc.run( [ 'yak.exe', 'build', '--platform', platform ] )
 
     - name : Upload Yak(s)
       shell: python
