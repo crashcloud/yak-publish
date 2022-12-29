@@ -27,28 +27,44 @@ runs:
   using: "composite"
   steps:
     
-    # https://discourse.mcneel.com/t/github-action-to-yak/120815/2
-    - run: Download Yak
-      shell: |
-        curl -o "yak.exe" "http://files.mcneel.com/yak/tools/latest/yak.exe"
+    - name: Setup Python
+      run : |
+        pip install wget
 
-    - run : Enable Yak exe
-      shell: chmod +x yak.exe
-
-    - run : Build Package(s)
-      shell: |
+    - run: Move to yak package directory
+      shell: python
+      run: |
         cd ${{ inputs.build-path }}
-        for pform in ${{ inputs.platforms }}; do
-          ./yak.exe build --platform $pform
-        done
 
-    - run : Upload Yak(s)
-      shell: |
-      source="https://yak.rhino3d.com"
-      if [ true == ${{inputs.test-run }} ]; then
-        source="https://test.yak.rhino3d.com"
-      fi
+    # https://discourse.mcneel.com/t/github-action-to-yak/120815/2
+    - name: Download Yak
+      shell: python
+      run: |
+        import wget
+        url = "http://files.mcneel.com/yak/tools/latest/yak.exe"
+        wget.download(url, "yak.exe")
 
-      for yakPackage in *.yak; do
-        ./yak.exe push $yakPackage --source $source
-      done
+    - name : Enable Yak exe on Unix
+      if: ${{ $RUNNER_OS != 'Windows' }}
+      run: chmod +x yak.exe
+
+    - name: Build Package(s)
+      shell: python
+      run: |
+        import subprocess as proc
+
+        for pform in ${{ inputs.platforms }}:
+          proc.run( [ 'yak.exe', 'build', '--platform', pform[:3] ] )
+
+    - name : Upload Yak(s)
+      shell: python
+      run: |
+        import subprocess as proc
+        from glob import glob
+        
+        source="https://yak.rhino3d.com"
+        if ${{ inputs.test-run }}:
+          source="https://test.yak.rhino3d.com"
+
+        for yakPackage in glob('.\*yak'):
+          proc.run( [ 'yak.exe', 'push', yakPackage, '--source', source ] )

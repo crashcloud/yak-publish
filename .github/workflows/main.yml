@@ -1,11 +1,16 @@
 on: [push]
 
 jobs:
-  hello_world_job:
-    runs-on: ubuntu-latest
+  publish-yak-example:
+    strategy:
+      matrix:
+        os: [ 'windows', 'mac-os', 'ubuntu' ]
+    runs-on: ${{ matrix.os }}
     name: Yak Build & Publish
     steps:
       - uses: actions/checkout@v3
+
+      # Build Project
 
       - id: yak
         uses: crashcloud/yak@v1
@@ -15,7 +20,5 @@ jobs:
           build-path: src/project/bin/**/x64/
           test-run: true
           platforms:
-            - win
-      - run: Echo Random Number
-        shell: |
-          echo random-number ${{ steps.yak.outputs.result }}
+            - ${{ matrix.os }}
+      
