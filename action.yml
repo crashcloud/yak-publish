@@ -18,6 +18,10 @@ inputs:
     description: 'The Platform for the Package'
     required: false
     default: 'win'
+  branding:
+    icon: 'package'
+    color: 'yellow'
+    
 outputs:
   result:
     description: 'Was the upload succesful?'
