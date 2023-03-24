@@ -18,9 +18,9 @@ inputs:
     description: 'The Platform for the Package'
     required: false
     default: 'win'
-  branding:
-    icon: 'package'
-    color: 'yellow'
+branding:
+  icon: 'package'
+  color: 'yellow'
     
 outputs:
   result:
