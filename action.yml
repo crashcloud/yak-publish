@@ -49,7 +49,7 @@ runs:
         wget.download(url, "yak.exe")
 
     - name : Enable Yak exe on Unix
-      if: runner.os != 'Windows' }}
+      if: runner.os != 'Windows'
       shell: bash
       run: chmod +x yak.exe
 
