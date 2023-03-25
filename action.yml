@@ -46,33 +46,11 @@ runs:
         path: 'yak.exe'
         key: yak-exe
 
-    - name: List files
-      shell: null
-      run : |
-        ls
-        ls ..
-        ls ..\..
-
-    - name: List files
-      shell: null
-      run : |
-        ls ..\..\_actions -r
-
-    - name: List files
-      shell: null
-      run : |
-        ls ..\..\_temp  -r
-
-    - name: List files
-      shell: null
-      run : |
-        ls ..\..\_PipelineMapping  -r
-
     # https://discourse.mcneel.com/t/github-action-to-yak/120815/2
     - name: Download Yak
       shell: null
       if: steps.cache-yak.outputs.cache-hit != 'true'
-      run: python py/download-yak.py
+      run: python ${{ github.action_path }}\py\download-yak.py
 
     - name : Enable Yak exe on Unix
       if: runner.os != 'Windows'
@@ -81,8 +59,8 @@ runs:
 
     - name: Build Package(s)
       shell: null
-      run: python py/build-package.py
+      run: python ${{ github.action_path }}\py\build-package.py
 
     - name : Upload Yak(s)
       shell: null
-      run: python py/upload-yak.py -p inputs.publish -b inputs.buildpath
+      run: python ${{ github.action_path }}\py\upload-yak.py -p inputs.publish -b inputs.buildpath
