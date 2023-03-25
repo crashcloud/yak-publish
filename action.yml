@@ -51,6 +51,16 @@ runs:
       run : |
         ls
 
+    - name: List files
+      shell: null
+      run : |
+        ls ..
+
+    - name: List files
+      shell: null
+      run : |
+        ls ..\..
+
     # https://discourse.mcneel.com/t/github-action-to-yak/120815/2
     - name: Download Yak
       shell: null
