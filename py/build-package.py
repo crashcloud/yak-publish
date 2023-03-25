@@ -14,7 +14,6 @@ platform = args.platform[:3].lower()
 cwd = os.getcwd()
 yak_exe_path = f'{cwd}\yak.exe'
 
-
 os.chdir(args.buildpath)
 print(f'moved to {os.getcwd()}')
 
