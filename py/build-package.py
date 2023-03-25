@@ -1,4 +1,5 @@
 import subprocess as proc
+from glob import glob
 import argparse
 import os
 import sys
@@ -14,14 +15,11 @@ platform = args.platform[:3].lower()
 cwd = os.getcwd()
 yak_exe_path = f'{cwd}\yak.exe'
 
-os.chdir(args.buildpath)
-print(f'moved to {os.getcwd()}')
+for dir in glob(args.buildpath):
+    os.chdir(dir)
+    print(f'moved to {os.getcwd()}')
 
-try:
-    result = proc.run( [ yak_exe_path, 'build', '--platform', platform ] )
-    if (result.returncode == 1):
-        print ('yak failed to build')
-finally:
-    os.chdir(cwd)
+    proc.run( [ yak_exe_path, 'build', '--platform', platform ] )
 
-sys.exit(result.returncode)
+os.chdir(cwd)
+sys.exit(0)
