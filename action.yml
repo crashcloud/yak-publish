@@ -59,7 +59,7 @@ runs:
 
     - name: Build Package(s)
       shell: null
-      run: python ${{ github.action_path }}\py\build-package.py
+      run: python ${{ github.action_path }}\py\build-package.py -b inputs.buildpath
 
     - name : Upload Yak(s)
       shell: null
