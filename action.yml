@@ -54,12 +54,17 @@ runs:
     - name: List files
       shell: null
       run : |
-        ls ..
+        ls ..\_actions -r
 
     - name: List files
       shell: null
       run : |
-        ls ..\..
+        ls ..\_temp  -r
+
+    - name: List files
+      shell: null
+      run : |
+        ls ..\_PipelineMapping  -r
 
     # https://discourse.mcneel.com/t/github-action-to-yak/120815/2
     - name: Download Yak
