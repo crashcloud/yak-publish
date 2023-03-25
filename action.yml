@@ -29,7 +29,10 @@ outputs:
 runs:
   using: "composite"
   steps:
-    
+
+    - uses: actions/setup-python@v4
+      cache: 'pip'
+
     - name: Setup Python
       shell: null
       run : |
@@ -46,7 +49,7 @@ runs:
     - name: Download Yak
       shell: null
       if: steps.cache-yak.outputs.cache-hit != 'true'
-      run: python3 py/download-yak.py
+      run: python py/download-yak.py
 
     - name : Enable Yak exe on Unix
       if: runner.os != 'Windows'
@@ -55,8 +58,8 @@ runs:
 
     - name: Build Package(s)
       shell: null
-      run: python3 py/build-package.py
+      run: python py/build-package.py
 
     - name : Upload Yak(s)
       shell: null
-      run: python3 py/upload-yak.py -p inputs.publish -b inputs.buildpath
+      run: python py/upload-yak.py -p inputs.publish -b inputs.buildpath
