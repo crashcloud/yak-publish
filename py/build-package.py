@@ -5,7 +5,7 @@ import os
 import sys
 
 parser = argparse.ArgumentParser()
-parser.add_argument("-p", "--platform", type=str, default='any', choices=['win', 'mac', 'any'])
+parser.add_argument("-p", "--platform", type=str, default='any', choices=['win', 'mac', 'windows-latest', 'macos-latest', 'any'])
 parser.add_argument("-b", "--buildpath", type=str, required=True)
 
 args = parser.parse_args()
