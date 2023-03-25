@@ -17,7 +17,7 @@ steps:
   	package-name: 'My Yak Package'
   	token: ${{ secrets.YAK_TOKEN }}
   	build-path: 'src/**/bin/**/**/'
-    publish: 'test'
+  	publish: 'test'
   	platform: win
 ```
 
