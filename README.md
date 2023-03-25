@@ -16,7 +16,8 @@ steps:
   with:
   	package-name: 'My Yak Package'
   	token: ${{ secrets.YAK_TOKEN }}
-  	build-path: 'src/project/bin/**/x64/'
+  	build-path: 'src/**/bin/**/**/'
+    publish: 'test'
   	platform: win
 ```
 
@@ -34,8 +35,8 @@ steps:
     with:
       package-name: 'My Yak Package'
       token: ${{ secrets.YAK_TOKEN }}
-      build-path: 'src/project/bin/**/x64/''
-      test-run: false
+      build-path: 'src/project/bin/**/x64/'
+      publish: 'production'
       platform: ${{ matrix.os }}      
 ```
 
@@ -46,7 +47,7 @@ steps:
 | `package-name` | The name of the package    | Enclose in quotes if spaces exist                            |
 | `token`        | `${{ secrets.YAK_TOKEN }}` | Use yak.exe --ci locally to get this token. Add to GitHub secrets. |
 | `build-path`   |                            | globs accepted                                               |
-| `test-run`     | true or false              | test-run uploads to the McNeel Test Server                   |
+| `publish`     | '', 'test', 'production'              | '' publishes nothing, 'test' published to the the McNeel Test Server. 'production' published to the real yak package server                   |
 | `platform`     | windows/win or mac/mac-os  | Linux not supported                                          |
 
 

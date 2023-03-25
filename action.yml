@@ -10,10 +10,10 @@ inputs:
   build-path:
     description: 'The Build Directory for the Package'
     required: true
-  test-run:
-    description: 'Publish to the test server'
+  publish:
+    description: 'Publish'
     required: false
-    default: true
+    default: ''
   platform:
     description: 'The Platform for the Package'
     required: false
@@ -25,7 +25,7 @@ branding:
 outputs:
   result:
     description: 'Was the upload succesful?'
-    value: true # ${{ steps.random-number-generator.outputs.random-number }}
+    value: true
 runs:
   using: "composite"
   steps:
@@ -35,18 +35,18 @@ runs:
       run : |
         pip install wget
 
-    - name: Move to yak package directory
-      shell: python
-      run: |
-        cd ${{ inputs.build-path }}
+    - name: Cache Yak
+      id: cache-yak
+      uses: actions/cache@v3
+      with:
+        path: 'yak.exe'
+        key: yak-exe
 
     # https://discourse.mcneel.com/t/github-action-to-yak/120815/2
     - name: Download Yak
-      shell: python
-      run: |
-        import wget
-        url = "http://files.mcneel.com/yak/tools/latest/yak.exe"
-        wget.download(url, "yak.exe")
+      shell: null
+      if: steps.cache-yak.outputs.cache-hit != 'true'
+      run: python3 py/download-yak.py
 
     - name : Enable Yak exe on Unix
       if: runner.os != 'Windows'
@@ -54,24 +54,9 @@ runs:
       run: chmod +x yak.exe
 
     - name: Build Package(s)
-      shell: python
-      run: |
-        import subprocess as proc
-
-        platform = ${{ inputs.platform }}
-        platform = platform[:3]
-
-        proc.run( [ 'yak.exe', 'build', '--platform', platform ] )
+      shell: null
+      run: python3 py/build-package.py
 
     - name : Upload Yak(s)
-      shell: python
-      run: |
-        import subprocess as proc
-        from glob import glob
-        
-        source="https://yak.rhino3d.com"
-        if ${{ inputs.test-run }}:
-          source="https://test.yak.rhino3d.com"
-
-        for yakPackage in glob('.\*yak'):
-          proc.run( [ 'yak.exe', 'push', yakPackage, '--source', source ] )
+      shell: null
+      run: python3 py/upload-yak.py -p inputs.publish -b inputs.buildpath
