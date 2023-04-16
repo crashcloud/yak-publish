@@ -12,7 +12,7 @@ see [action.yml](https://github.com/crashcloud/yak-publish/blob/main/.github/wor
 
 ``` yaml
 steps:
-- uses: crashcloud/yak-publish@v1
+- uses: crashcloud/yak-publish@main
   with:
   	package-name: 'My Yak Package'
   	token: ${{ secrets.YAK_TOKEN }}
@@ -31,7 +31,7 @@ runs-on: ${{ matrix.os }}
 name: Yak Build & Publish
 steps:
   - id: yak
-    uses: crashcloud/yak-publish@v1
+    uses: crashcloud/yak-publish@main
     with:
       package-name: 'My Yak Package'
       token: ${{ secrets.YAK_TOKEN }}
