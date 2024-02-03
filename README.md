@@ -5,6 +5,7 @@ This builds and publishes any Rhino and/or Grasshopper plugins (defined by a yak
 
 
 # Usage
+You will need to make sure you define `YAK_TOKEN` in your environment variables following this guide : https://discourse.mcneel.com/t/github-action-to-yak/120815/2
 
 see [action.yml](https://github.com/crashcloud/yak-publish/blob/main/.github/workflows/action.yml)
 
